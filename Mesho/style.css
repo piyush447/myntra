@@ -249,10 +249,10 @@ margin-left: 5px;
     font-weight: 700p;    
     cursor: pointer;
 }
-action_container{
+.action-container{
     text-decoration: none;
 }
 
-a.action_container:link{
+a.action-container:link{
     color: black;
 }
