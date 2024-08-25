@@ -1,13 +1,21 @@
 const chargefee = 99;
 let bagItemObject;
-// let bagItems= [];
+let bagItems = JSON.parse(localStorage.getItem('bagItems')) || [];
+
+// Assuming you have an array of items somewhere in your script
+const items = [
+    // Example items, you should replace these with your actual item objects
+    { id: 1, company: 'Company A', item_name: 'Item A', original_price: 1000, current_price: 800, image_path: 'path/to/image1.jpg', return_period: '30 Days', delivery_date: 'Aug 30, 2024' },
+    { id: 2, company: 'Company B', item_name: 'Item B', original_price: 2000, current_price: 1500, image_path: 'path/to/image2.jpg', return_period: '15 Days', delivery_date: 'Sep 1, 2024' },
+    // Add more items here
+];
+
 onload();
+
 function onload() {
     loadBagItemObject();
-    bagItemCount();
+    displayBagItems();
     displayBagSummary();
-    bagItems();
-   
 }
 
 function displayBagSummary() {
@@ -48,21 +56,23 @@ function displayBagSummary() {
             <div class="css-xjhrni">PLACE ORDER</div>
         </button>`;
 }
-
 function loadBagItemObject() {
-    console.log(bagItems);
     bagItemObject = bagItems.map(itemId => {
-      for (let i = 0; i < items.length; i++) {
-        if (itemId == items[i].id) {
-          return items[i];
+        for (let i = 0; i < items.length; i++) {
+            if (itemId == items[i].id) {
+                return items[i];
+            }
         }
-      }
     });
     console.log(bagItemObject);
-  }
+}
 
-function bagItemCount() {
+function displayBagItems() {
     let containerElement = document.querySelector('.bag-items-container');
+    if (!containerElement) {
+        console.error("Element with class 'bag-items-container' not found.");
+        return;
+    }
     let innerHTML = '';
     bagItemObject.forEach(bagItem => {
         innerHTML += generateHTML(bagItem);
@@ -74,7 +84,7 @@ function removeFromBag(itemId) {
     bagItems = bagItems.filter(bagItemID => bagItemID !== itemId);
     localStorage.setItem('bagItems', JSON.stringify(bagItems));
     loadBagItemObject();
-    bagItemCount();
+    displayBagItems(); // Corrected from bagItemCount() to displayBagItems()
     displayBagSummary(); // Update the summary after removing an item
 }
 
@@ -99,4 +109,5 @@ function generateHTML(item) {
             </div>
             <div class="remove-from-cart" onclick="removeFromBag(${item.id})">X</div>
         </div>`;
+        
 }
